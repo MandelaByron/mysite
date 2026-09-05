@@ -1,6 +1,7 @@
 import { client } from "@/sanity/lib/client";
 import { SETTINGS_QUERY } from "@/sanity/lib/queries";
 import type { Settings, SocialLink } from "@/sanity/lib/types";
+import Image from "next/image";
 
 // Footer fetches its own data rather than receiving settings as a prop.
 // This keeps layout.tsx simple (no need to fetch settings just to hand
@@ -14,12 +15,29 @@ export async function Footer() {
   return (
     <footer className="w-full mt-16 pt-8 border-t border-primary-foreground/10">
       <div className="flex md:flex-row items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-4">
-          <span className="text-lg font-bold">SpilledCode</span>
-        </div>
+        <a className="flex items-center gap-4" href="/">
+          <Image
+            src="/spilledcode-light.svg"
+            alt="SpilledCode"
+            width={140}
+            height={32}
+            priority
+            className="block dark:hidden"
+          />
+          <Image
+            src="/spilledcode.svg"
+            alt="SpilledCode"
+            width={140}
+            height={32}
+            priority
+            className="hidden dark:block"
+          />
+        </a>
 
         <div className="flex items-center gap-4">
-          <span className="text-xs text-primary-foreground">Byron Mandela . Software Developer</span>
+          <span className="text-xs text-primary-foreground">
+            Byron Mandela . Software Developer
+          </span>
         </div>
 
         <div className="flex items-center gap-4">
@@ -31,7 +49,7 @@ export async function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Visit ${link.platform} profile`}
-                  className="text-primary-foreground hover:text-blue-600 hover:dark:text-emerald-300 dark:underline dark:underline-offset-2 dark:decoration-gray-800"
+                  className="text-primary-foreground hover:text-slate-600 hover:dark:text-slate-300 dark:underline dark:underline-offset-2 dark:decoration-gray-800"
                 >
                   <span>{link.platform}</span>
                 </a>
@@ -42,4 +60,3 @@ export async function Footer() {
     </footer>
   );
 }
-

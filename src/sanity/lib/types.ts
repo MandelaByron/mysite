@@ -1,5 +1,5 @@
 export interface SocialLink {
-  platform: 'x' | 'instagram' | 'github' | 'upwork' | string;
+  platform: "x" | "instagram" | "github" | "upwork" | string;
   url: string;
 }
 

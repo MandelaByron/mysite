@@ -336,12 +336,15 @@ export type POSTS_QUERY_RESULT = Array<{
 }>;
 
 // Query TypeMap
-import "@sanity/client";
-declare module "@sanity/client" {
+declare global {
   interface SanityQueries {
     '\n  *[_type == "settings"][0]{\n    name,\n    bio,\n    image,\n    upworkUrl,\n    socialLinks\n  }\n': SETTINGS_QUERY_RESULT;
     '\n  *[_type == "work"] | order(order asc){\n    _id,\n    title,\n    tagline,\n    description,\n    externalUrl,\n    image\n  }\n': WORK_QUERY_RESULT;
     '\n  *[_type == "post" && slug.current == $slug][0]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    body\n  }\n': POST_QUERY_RESULT;
     '\n  *[_type == "post"] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt\n  }\n': POSTS_QUERY_RESULT;
   }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module "@sanity/client" {
+  interface SanityQueries extends globalThis.SanityQueries {}
 }

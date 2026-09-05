@@ -1,13 +1,11 @@
-
-
-import { siX, siInstagram, siGithub, siUpwork } from 'simple-icons';
-import type { SimpleIcon } from 'simple-icons';
+import { siX, siInstagram, siGithub, siUpwork } from "simple-icons";
+import type { SimpleIcon } from "simple-icons";
 
 const ICONS: Record<string, SimpleIcon> = {
   x: siX,
   instagram: siInstagram,
   github: siGithub,
-  upwork: siUpwork
+  upwork: siUpwork,
 };
 
 export function SocialIcon({ platform }: { platform: string }) {

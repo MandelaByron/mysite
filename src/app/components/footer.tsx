@@ -1,8 +1,6 @@
-
-import { client } from '@/sanity/lib/client';
-import { SETTINGS_QUERY } from '@/sanity/lib/queries';
-import { SocialIcon } from './icons';
-import type { Settings, SocialLink } from '@/sanity/lib/types';
+import { client } from "@/sanity/lib/client";
+import { SETTINGS_QUERY } from "@/sanity/lib/queries";
+import type { Settings, SocialLink } from "@/sanity/lib/types";
 
 // Footer fetches its own data rather than receiving settings as a prop.
 // This keeps layout.tsx simple (no need to fetch settings just to hand
@@ -14,8 +12,16 @@ export async function Footer() {
   const settings = await client.fetch<Settings | null>(SETTINGS_QUERY);
 
   return (
-    <footer className="max-w-3xl mx-auto w-full mt-16 pt-8 border-t border-white/10">
-      <div className="flex items-center justify-between flex-wrap gap-4">
+    <footer className="w-full mt-16 pt-8 border-t border-primary-foreground/10">
+      <div className="flex md:flex-row items-center justify-between flex-wrap gap-4">
+        <div className="flex items-center gap-4">
+          <span className="text-lg font-bold">SpilledCode</span>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <span className="text-xs text-primary-foreground">Byron Mandela . Software Developer</span>
+        </div>
+
         <div className="flex items-center gap-4">
           {settings?.socialLinks?.length
             ? settings.socialLinks.map((link: SocialLink) => (
@@ -25,25 +31,15 @@ export async function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Visit ${link.platform} profile`}
-                  className="text-white/70 hover:text-white transition-colors"
+                  className="text-primary-foreground hover:text-blue-600 hover:dark:text-emerald-300 dark:underline dark:underline-offset-2 dark:decoration-gray-800"
                 >
-                  <SocialIcon platform={link.platform} />
+                  <span>{link.platform}</span>
                 </a>
               ))
             : null}
         </div>
-
-        {settings?.upworkUrl ? (
-          <a
-            href={settings.upworkUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-white/70 hover:text-white underline underline-offset-2 transition-colors"
-          >
-            Hire me on Upwork
-          </a>
-        ) : null}
       </div>
     </footer>
   );
 }
+

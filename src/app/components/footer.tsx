@@ -13,34 +13,17 @@ export async function Footer() {
   const settings = await client.fetch<Settings | null>(SETTINGS_QUERY);
 
   return (
-    <footer className="w-full mt-16 pt-8 border-t border-primary-foreground/10">
-      <div className="flex md:flex-row items-center justify-between flex-wrap gap-4">
-        <a className="flex items-center gap-4" href="/">
-          <Image
-            src="/spilledcode-light.svg"
-            alt="SpilledCode"
-            width={140}
-            height={32}
-            priority
-            className="block dark:hidden"
-          />
-          <Image
-            src="/spilledcode.svg"
-            alt="SpilledCode"
-            width={140}
-            height={32}
-            priority
-            className="hidden dark:block"
-          />
+    <footer className="shell border-t border-primary-foreground/10 py-10">
+      <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-12 md:gap-x-6 md:min-h-[116px]">
+        <a className="font-bold text-lg md:col-span-4" href="/">
+          SpilledCode
         </a>
 
-        <div className="flex items-center gap-4">
-          <span className="text-xs text-primary-foreground">
-            Byron Mandela . Software Developer
-          </span>
-        </div>
+        <span className="text-xs text-primary-foreground md:col-span-4 md:text-center">
+          Byron Mandela . Software Developer
+        </span>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 md:col-span-4 md:justify-end">
           {settings?.socialLinks?.length
             ? settings.socialLinks.map((link: SocialLink) => (
                 <a
@@ -60,3 +43,5 @@ export async function Footer() {
     </footer>
   );
 }
+
+//grid grid-cols-12 items-center gap-x-6 min-h-[116px]

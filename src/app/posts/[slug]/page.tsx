@@ -35,7 +35,7 @@ export default async function PostPage({
     : null;
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl p-4 mt-4 mx-auto">
       <h1 className="text-xl md:text-3xl font-semibold leading-tight">
         {post.title}
       </h1>

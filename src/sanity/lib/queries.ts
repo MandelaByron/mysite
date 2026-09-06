@@ -31,6 +31,18 @@ export const POST_QUERY = defineQuery(`
   }
 `);
 
+export const RECENT_POSTS_QUERY = defineQuery(`
+  *[_type == "post"] | order(publishedAt desc)[0...4]{
+    _id,
+    title,
+    slug,
+    tagline,
+    publishedAt,
+    mainImage,
+    "category": categories[0]->title
+  }
+`);
+
 export const POSTS_QUERY = defineQuery(`
   *[_type == "post"] | order(publishedAt desc){
     _id,

@@ -39,3 +39,13 @@ export interface Post {
   publishedAt?: string | null;
   body?: unknown;
 }
+
+export interface PostPreview {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  tagline?: string;
+  publishedAt?: string;
+  mainImage?: SanityImage & { alt?: string };
+  category?: string;
+}

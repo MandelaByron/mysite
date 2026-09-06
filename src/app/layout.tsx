@@ -30,8 +30,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen px-6 py-12 md:px-16 md:py-20">
-            <main className="max-w-6xl mx-auto w-full">
+          <div className="flex flex-col min-h-screen">
+            <main className="translate-none rotate-none scale-none">
               {children}
               <Footer />
             </main>

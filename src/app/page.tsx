@@ -150,6 +150,7 @@ export default async function HomePage() {
           <div className="divide-y divide-primary-foreground/10 mt-4">
             {recentPosts?.length ? (
               recentPosts.map((post: Post) => {
+                if (!post.slug?.current) return null;
                 const publishedDate = post.publishedAt
                   ? new Date(post.publishedAt).toLocaleDateString("en-US", {
                       month: "long",

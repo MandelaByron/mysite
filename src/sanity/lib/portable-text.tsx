@@ -85,11 +85,10 @@ export const portableTextComponents: PortableTextComponents = {
       //if (!value?.asset?._ref) return null;
       if (!value?.asset?._ref) return null;
 
-      const imageUrl = urlFor(value)
-        .width(1200)
-        .fit("max")
-        .auto("format")
-        .url();
+      const builder = urlFor(value)?.width(1200).fit("max").auto("format");
+      if (!builder) return null;
+      const imageUrl = builder.url();
+
 
       const { width, height } = getImageDimensions(value);
 

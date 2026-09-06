@@ -33,10 +33,19 @@ export interface WorkItem {
 export interface Post {
   _id: string;
   title: string;
-  slug?: {
+  slug: {
     current: string;
   };
+  tagline?: string;
   publishedAt?: string | null;
+  mainImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+    };
+    alt?: string;
+  };
+  category?: string;
   body?: unknown;
 }
 

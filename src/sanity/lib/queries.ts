@@ -51,3 +51,15 @@ export const POSTS_QUERY = defineQuery(`
     publishedAt
   }
 `);
+
+export const ALL_POSTS_QUERY = defineQuery(`
+  *[_type == "post" && defined(slug.current)] | order(publishedAt desc){
+    _id,
+    title,
+    slug,
+    tagline,
+    publishedAt,
+    mainImage,
+    "category": categories[0]->title
+  }
+`);

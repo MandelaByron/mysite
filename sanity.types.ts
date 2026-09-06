@@ -326,6 +326,26 @@ export type POST_QUERY_RESULT = {
 } | null;
 
 // Source: ../web/src/sanity/lib/queries.ts
+// Variable: RECENT_POSTS_QUERY
+// Query: *[_type == "post"] | order(publishedAt desc)[0...4]{    _id,    title,    slug,    tagline,    publishedAt,    mainImage,    "category": categories[0]->title  }
+export type RECENT_POSTS_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  tagline: null;
+  publishedAt: string | null;
+  mainImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  category: string | null;
+}>;
+
+// Source: ../web/src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
 // Query: *[_type == "post"] | order(publishedAt desc){    _id,    title,    slug,    publishedAt  }
 export type POSTS_QUERY_RESULT = Array<{
@@ -335,13 +355,35 @@ export type POSTS_QUERY_RESULT = Array<{
   publishedAt: string | null;
 }>;
 
+// Source: ../web/src/sanity/lib/queries.ts
+// Variable: ALL_POSTS_QUERY
+// Query: *[_type == "post" && defined(slug.current)] | order(publishedAt desc){    _id,    title,    slug,    tagline,    publishedAt,    mainImage,    "category": categories[0]->title  }
+export type ALL_POSTS_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  tagline: null;
+  publishedAt: string | null;
+  mainImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  category: string | null;
+}>;
+
 // Query TypeMap
 declare global {
   interface SanityQueries {
     '\n  *[_type == "settings"][0]{\n    name,\n    bio,\n    image,\n    upworkUrl,\n    socialLinks\n  }\n': SETTINGS_QUERY_RESULT;
     '\n  *[_type == "work"] | order(order asc){\n    _id,\n    title,\n    tagline,\n    description,\n    externalUrl,\n    image\n  }\n': WORK_QUERY_RESULT;
     '\n  *[_type == "post" && slug.current == $slug][0]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    body\n  }\n': POST_QUERY_RESULT;
+    '\n  *[_type == "post"] | order(publishedAt desc)[0...4]{\n    _id,\n    title,\n    slug,\n    tagline,\n    publishedAt,\n    mainImage,\n    "category": categories[0]->title\n  }\n': RECENT_POSTS_QUERY_RESULT;
     '\n  *[_type == "post"] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt\n  }\n': POSTS_QUERY_RESULT;
+    '\n  *[_type == "post" && defined(slug.current)] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    tagline,\n    publishedAt,\n    mainImage,\n    "category": categories[0]->title\n  }\n': ALL_POSTS_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

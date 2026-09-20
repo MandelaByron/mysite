@@ -75,7 +75,7 @@ export default async function WritingPage() {
             })
           ) : (
             <p className="py-6 text-muted-foreground">
-              No posts yet — add one at <code>/studio</code>.
+              No posts yet.
             </p>
           )}
         </div>

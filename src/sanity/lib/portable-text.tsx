@@ -18,6 +18,9 @@ export const portableTextComponents: PortableTextComponents = {
     h3: ({ children }) => (
       <h3 className="font-semibold text-2xl mt-8 mb-3">{children}</h3>
     ),
+    h4: ({ children }) => (
+      <h4 className="font-semibold text-xl mt-8 mb-3">{children}</h4>
+    ),
     normal: ({ children }) => (
       <p className="text-primary-foreground leading-snug">{children}</p>
     ),

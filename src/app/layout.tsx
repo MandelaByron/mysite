@@ -1,4 +1,8 @@
 import "./globals.css";
+import { draftMode } from 'next/headers'
+import { VisualEditing } from 'next-sanity/visual-editing'
+import { DisableDraftMode } from './components/disable-draft-mode'
+import { SanityLive } from '@/sanity/lib/live'
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
@@ -18,12 +22,14 @@ export const metadata: Metadata = {
   description: "Engineer and writer.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <body className="antialiased bg-background text-foreground font-[family-name:var(--font-poppins)]">
+        
+        {/* Keep your layout pristine and script-free */}
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -38,7 +44,19 @@ export default function RootLayout({
             <Analytics />
           </div>
         </ThemeProvider>
+
+        {/* 🚀 MOVE THESE HERE: Outside of layout wrappers & Theme Providers */}
+        <SanityLive />
+
+        {(await draftMode()).isEnabled && (
+          <>
+            <DisableDraftMode />
+            <VisualEditing />
+          </>
+        )}
+        
       </body>
     </html>
   );
 }
+

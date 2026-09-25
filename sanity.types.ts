@@ -287,7 +287,7 @@ export type WORK_QUERY_RESULT = Array<never>;
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: POST_QUERY
-// Query: *[_type == "post" && slug.current == $slug][0]{    _id,    title,    slug,    publishedAt,    body  }
+// Query: *[_type == "post" && slug.current == $slug][0]{    _id,    title,    slug,    publishedAt,    body[]{      ...,      markDefs[]{        ...,        _type == "internalLink" => {          "slug": reference->slug.current        }      }    }  }
 export type POST_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -304,11 +304,11 @@ export type POST_QUERY_RESULT = {
         style?:
           "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
         listItem?: "bullet" | "number";
-        markDefs?: Array<{
+        markDefs: Array<{
           href?: string;
           _type: "link";
           _key: string;
-        }>;
+        }> | null;
         level?: number;
         _type: "block";
         _key: string;
@@ -321,6 +321,7 @@ export type POST_QUERY_RESULT = {
         alt?: string;
         _type: "image";
         _key: string;
+        markDefs: null;
       }
   > | null;
 } | null;
@@ -380,7 +381,7 @@ declare global {
   interface SanityQueries {
     '\n  *[_type == "settings"][0]{\n    name,\n    bio,\n    image,\n    upworkUrl,\n    socialLinks\n  }\n': SETTINGS_QUERY_RESULT;
     '\n  *[_type == "work"] | order(order asc){\n    _id,\n    title,\n    tagline,\n    description,\n    externalUrl,\n    image\n  }\n': WORK_QUERY_RESULT;
-    '\n  *[_type == "post" && slug.current == $slug][0]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    body\n  }\n': POST_QUERY_RESULT;
+    '\n  *[_type == "post" && slug.current == $slug][0]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    body[]{\n      ...,\n      markDefs[]{\n        ...,\n        _type == "internalLink" => {\n          "slug": reference->slug.current\n        }\n      }\n    }\n  }\n': POST_QUERY_RESULT;
     '\n  *[_type == "post"] | order(publishedAt desc)[0...4]{\n    _id,\n    title,\n    slug,\n    tagline,\n    publishedAt,\n    mainImage,\n    "category": categories[0]->title\n  }\n': RECENT_POSTS_QUERY_RESULT;
     '\n  *[_type == "post"] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt\n  }\n': POSTS_QUERY_RESULT;
     '\n  *[_type == "post" && defined(slug.current)] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    tagline,\n    publishedAt,\n    mainImage,\n    "category": categories[0]->title\n  }\n': ALL_POSTS_QUERY_RESULT;

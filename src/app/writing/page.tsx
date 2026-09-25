@@ -4,12 +4,15 @@ import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { ALL_POSTS_QUERY } from "@/sanity/lib/queries";
 import type { Post } from "@/sanity/lib/types";
+import { sanityFetch } from "@/sanity/lib/live"
 
 export const revalidate = 60;
 
 export default async function WritingPage() {
-  const posts = await client.fetch<Post[] | null>(ALL_POSTS_QUERY);
+  const posts_data = await sanityFetch({ query : ALL_POSTS_QUERY });
 
+  const posts = posts_data.data;
+  //<Post[] | null>(ALL_POSTS_QUERY)
   return (
     <section>
       <div className="shell py-12 md:py-16">
@@ -35,7 +38,7 @@ export default async function WritingPage() {
               return (
                 <Link
                   key={post._id}
-                  href={`/posts/${post.slug.current}`}
+                  href={`/posts/${post.slug?.current}`}
                   className="group py-12 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center"
                 >
                   <div>

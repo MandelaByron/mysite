@@ -27,7 +27,15 @@ export const POST_QUERY = defineQuery(`
     title,
     slug,
     publishedAt,
-    body
+    body[]{
+      ...,
+      markDefs[]{
+        ...,
+        _type == "internalLink" => {
+          "slug": reference->slug.current
+        }
+      }
+    }
   }
 `);
 

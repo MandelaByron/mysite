@@ -6,6 +6,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { POST_QUERY, SETTINGS_QUERY } from "@/sanity/lib/queries";
 import { portableTextComponents } from "@/sanity/lib/portable-text";
 import type { Post, Settings } from "@/sanity/lib/types";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live"
 
 export const revalidate = 60;
 
@@ -16,10 +17,18 @@ export default async function PostPage({
 }) {
   const { slug } = await params;
 
-  const [post, settings] = await Promise.all([
-    client.fetch<Post | null>(POST_QUERY, { slug }),
-    client.fetch<Settings | null>(SETTINGS_QUERY),
+  // const [post, settings] = await Promise.all([
+  //   client.fetch<Post | null>(POST_QUERY, { slug }),
+  //   client.fetch<Settings | null>(SETTINGS_QUERY),
+  // ]);
+  const [postResponse, settingsResponse] = await Promise.all([
+    sanityFetch({ query: POST_QUERY, params: { slug } }),
+    sanityFetch({ query: SETTINGS_QUERY }),
   ]);
+
+  // Extract the data from the live response wrapper
+  const post = postResponse.data;
+  const settings = settingsResponse.data;
 
   if (!post) notFound();
 

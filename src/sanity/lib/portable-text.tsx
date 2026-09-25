@@ -73,6 +73,18 @@ export const portableTextComponents: PortableTextComponents = {
         </a>
       );
     },
+    internalLink: ({ value, children }) => {
+      const slug = value?.slug;
+      if (!slug) return <>{children}</>;
+      return (
+        <Link
+          href={`/posts/${slug}`}
+          className="text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:dark:text-slate-300 dark:underline dark:underline-offset-2 dark:decoration-gray-800"
+        >
+          {children}
+        </Link>
+      );
+    },
   },
   types: {
     // Rendered by the @sanity/code-input field type defined in post.ts

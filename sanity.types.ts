@@ -15,6 +15,91 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
+export type Work = {
+  _id: string;
+  _type: "work";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  tagline?: string;
+  description?: string;
+  externalUrl?: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  order?: number;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type Settings = {
+  _id: string;
+  _type: "settings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  bio?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  upworkUrl?: string;
+  socialLinks?: Array<{
+    platform?: "x" | "instagram" | "github" | "upwork";
+    url?: string;
+    _type: "socialLink";
+    _key: string;
+  }>;
+};
+
 export type Category = {
   _id: string;
   _type: "category";
@@ -39,18 +124,18 @@ export type AuthorReference = {
   [internalGroqTypeReferenceTo]?: "author";
 };
 
-export type SanityImageAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-};
-
 export type CategoryReference = {
   _ref: string;
   _type: "reference";
   _weak?: boolean;
   [internalGroqTypeReferenceTo]?: "category";
+};
+
+export type PostReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "post";
 };
 
 export type Post = {
@@ -60,6 +145,7 @@ export type Post = {
   _updatedAt: string;
   _rev: string;
   title?: string;
+  tagline?: string;
   slug?: Slug;
   author?: AuthorReference;
   mainImage?: {
@@ -87,11 +173,18 @@ export type Post = {
         style?:
           "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
         listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
-          _key: string;
-        }>;
+        markDefs?: Array<
+          | {
+              href?: string;
+              _type: "link";
+              _key: string;
+            }
+          | {
+              reference?: PostReference;
+              _type: "internalLink";
+              _key: string;
+            }
+        >;
         level?: number;
         _type: "block";
         _key: string;
@@ -106,22 +199,6 @@ export type Post = {
         _key: string;
       }
   >;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type Author = {
@@ -257,14 +334,17 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | SanityImageAssetReference
+  | Work
+  | SanityImageCrop
+  | SanityImageHotspot
+  | Settings
   | Category
   | Slug
   | AuthorReference
-  | SanityImageAssetReference
   | CategoryReference
+  | PostReference
   | Post
-  | SanityImageCrop
-  | SanityImageHotspot
   | Author
   | SanityImagePaletteSwatch
   | SanityImagePalette
@@ -278,12 +358,60 @@ export type AllSanitySchemaTypes =
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: SETTINGS_QUERY
 // Query: *[_type == "settings"][0]{    name,    bio,    image,    upworkUrl,    socialLinks  }
-export type SETTINGS_QUERY_RESULT = null;
+export type SETTINGS_QUERY_RESULT = {
+  name: string | null;
+  bio: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  upworkUrl: string | null;
+  socialLinks: Array<{
+    platform?: "github" | "instagram" | "upwork" | "x";
+    url?: string;
+    _type: "socialLink";
+    _key: string;
+  }> | null;
+} | null;
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: WORK_QUERY
 // Query: *[_type == "work"] | order(order asc){    _id,    title,    tagline,    description,    externalUrl,    image  }
-export type WORK_QUERY_RESULT = Array<never>;
+export type WORK_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  tagline: string | null;
+  description: string | null;
+  externalUrl: string | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+}>;
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: POST_QUERY
@@ -304,11 +432,19 @@ export type POST_QUERY_RESULT = {
         style?:
           "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
         listItem?: "bullet" | "number";
-        markDefs: Array<{
-          href?: string;
-          _type: "link";
-          _key: string;
-        }> | null;
+        markDefs: Array<
+          | {
+              reference?: PostReference;
+              _type: "internalLink";
+              _key: string;
+              slug: string | null;
+            }
+          | {
+              href?: string;
+              _type: "link";
+              _key: string;
+            }
+        > | null;
         level?: number;
         _type: "block";
         _key: string;
@@ -333,7 +469,7 @@ export type RECENT_POSTS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
   slug: Slug | null;
-  tagline: null;
+  tagline: string | null;
   publishedAt: string | null;
   mainImage: {
     asset?: SanityImageAssetReference;
@@ -363,7 +499,7 @@ export type ALL_POSTS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
   slug: Slug | null;
-  tagline: null;
+  tagline: string | null;
   publishedAt: string | null;
   mainImage: {
     asset?: SanityImageAssetReference;

@@ -1,12 +1,10 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
-import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { POST_QUERY, SETTINGS_QUERY } from "@/sanity/lib/queries";
 import { portableTextComponents } from "@/sanity/lib/portable-text";
-import type { Post, Settings } from "@/sanity/lib/types";
-import { sanityFetch, SanityLive } from "@/sanity/lib/live"
+import { sanityFetch } from "@/sanity/lib/live"
 
 export const revalidate = 60;
 

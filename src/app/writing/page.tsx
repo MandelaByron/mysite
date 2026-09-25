@@ -1,9 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { ALL_POSTS_QUERY } from "@/sanity/lib/queries";
-import type { Post } from "@/sanity/lib/types";
 import { sanityFetch } from "@/sanity/lib/live"
 
 export const revalidate = 60;
